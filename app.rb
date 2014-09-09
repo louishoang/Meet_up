@@ -28,15 +28,21 @@ def authenticate!
     redirect '/'
   end
 
-def new_meetup?(name, description)
-  !Meetup.exists?(name: name, description: description)
-end
-
-end
+  def new_meetup?(name, description)
+    !Meetup.exists?(name: name, description: description)
+  end
+end # End of class
 
 def already_member?(user_id, meetup_id)
   Membership.where(user_id: user_id, meetup_id: meetup_id).exists?
 end
+
+def get_members(meetup_id)
+  @members_list = User.joins(:memberships)
+  @members_list.where(meetup_id: meetup_id)
+  # @members_list = Membership.joins(:users).collect{|membership| membership.users.map{|user| user.attributes.merge(membership.attributes)}}
+end
+
 
 get '/' do
   @meetups = Meetup.all.order('name')
@@ -67,9 +73,13 @@ end
 
 get '/meetups/:id' do
   @meetup = Meetup.find(params[:id])
+
   if signed_in?
     @already_member = already_member?(current_user.id, params[:id])
   end
+  get_members(@meetup)
+
+
   erb :'meetups/show'
 end
 

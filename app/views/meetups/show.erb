@@ -19,3 +19,17 @@
     <input type="submit" value="Leave this MeetUp">
   </form>
 <% end %>
+
+<div class="members_list red">
+  <h2> List of members </h2>
+  <ul class="flexy-grid flexy-grid--three-up">
+    <% @members_list.each do |member| %>
+      <li>
+        <div>
+          <img class="avatar" src="<%= member[:avatar_url] %>"/><br>
+          <span style="padding-left: 50px"><%= member[:username].capitalize %></span>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+</div>

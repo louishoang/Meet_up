@@ -42,3 +42,29 @@ a:visited {
 .red{
   color: red;
 }
+
+.avatar{
+  width:180px;
+  height:180px;
+  border-radius:360px;
+  border-width:6px
+}
+
+.mini-profiles{
+  margin-left:0;
+  position:relative
+}
+
+.mini-profiles:after{
+  content:"";
+  display:table;
+  clear:both;
+}
+
+.members_list{
+  margin-top: 30px
+}
+
+.flexy-grid{
+  list-style-type: none;
+}
