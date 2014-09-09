@@ -90,10 +90,19 @@ post '/new' do
 end
 
 post '/join' do
+  @fields = {user_id: params[:user_id], meetup_id: params[:meetup_id], role: params[:meetup_id]}
   if !authenticate!
     flash[:notice] = "You must sign in."
   else
-    @new_member = Membership.find_or_create_by(user_id: params[:user_id], meetup_id: params[:meetup_id], role: params[:meetup_id])
+    @new_member = Membership.find_or_create_by(@fields)
+    flash[:notice] = "You just joined the group, congratulation!"
   end
-  redirect "/meetups/#{@new_member.id}"
+  redirect "/meetups/#{@fields[:meetup_id]}"
+end
+
+post '/leave' do
+  @fields = {user_id: params[:user_id], meetup_id: params[:meetup_id], role: params[:meetup_id]}
+  @leave_member = Membership.where(@fields).destroy_all
+  flash[:notice] = "You have left the group"
+  redirect "/meetups/#{@fields[:meetup_id]}"
 end

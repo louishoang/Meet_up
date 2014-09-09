@@ -10,3 +10,12 @@
     <input type="submit" value="Join this MeetUp">
   </form>
 <% end %>
+
+<% if current_user != nil && @already_member %>
+<form method="post" action="/leave">
+    <input type="hidden" name="user_id" value="<%= current_user.id %>">
+    <input type="hidden" name="meetup_id" value="<%= @meetup.id %>">
+    <input type="hidden" name="role" value="member">
+    <input type="submit" value="Leave this MeetUp">
+  </form>
+<% end %>
