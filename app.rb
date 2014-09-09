@@ -27,9 +27,15 @@ def authenticate!
     flash[:notice] = 'You need to sign in if you want to do that!'
     redirect '/'
   end
+
+def new_meetup?(name, description)
+  !Meetup.exists?(name: name, description: description)
+end
+
 end
 
 get '/' do
+  @meetups = Meetup.all.order('name')
   erb :index
 end
 
@@ -59,4 +65,20 @@ get '/meetups/:id' do
   @meetup = Meetup.find(params[:id])
 
   erb :'meetups/show'
+end
+
+get '/new' do
+  authenticate!
+  erb :'meetups/new'
+end
+
+post '/new' do
+  name = params[:meetup_name]
+  location = params[:location]
+  description = params[:description]
+  if new_meetup?(name, description)
+    flash[:notice] = "New meetup added successfully."
+  end
+  @new_meetup = Meetup.find_or_create_by(name: name, location: location, description: description)
+  redirect "/meetups/#{@new_meetup.id}"
 end

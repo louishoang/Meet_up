@@ -1,0 +1,8 @@
+<h2> Add New Contact </h2>
+<form style="margin-top :30px" method="post" name="add_meetup" action="/new" onsubmit="return validateForm()">
+  <label for="meetup_name">Meetup Name: </label><input class="req red" type="text" name="meetup_name"/></br>
+  <label for="location">Location: </label><input class="req red" type="text" name="location"/></br>
+  <label for="description">Description: </label><br>
+  <textarea cols="40" rows="5" name="description" class="req red"></textarea></br>
+  <input type="submit" value="Submit"/>
+</form>
