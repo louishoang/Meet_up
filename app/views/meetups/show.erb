@@ -1,3 +1,12 @@
 <h1><%= @meetup.name %> </h1>
 <p><%= @meetup.location %> </p>
 <p><%= @meetup.description %> </p>
+
+<% if current_user != nil && !@already_member %>
+  <form method="post" action="/join">
+    <input type="hidden" name="user_id" value="<%= current_user.id %>">
+    <input type="hidden" name="meetup_id" value="<%= @meetup.id %>">
+    <input type="hidden" name="role" value="member">
+    <input type="submit" value="Join this MeetUp">
+  </form>
+<% end %>

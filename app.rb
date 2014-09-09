@@ -34,6 +34,10 @@ end
 
 end
 
+def already_member?(user_id, meetup_id)
+  Membership.where(user_id: user_id, meetup_id: meetup_id).exists?
+end
+
 get '/' do
   @meetups = Meetup.all.order('name')
   erb :index
@@ -63,7 +67,9 @@ end
 
 get '/meetups/:id' do
   @meetup = Meetup.find(params[:id])
-
+  if signed_in?
+    @already_member = already_member?(current_user.id, params[:id])
+  end
   erb :'meetups/show'
 end
 
@@ -81,4 +87,13 @@ post '/new' do
   end
   @new_meetup = Meetup.find_or_create_by(name: name, location: location, description: description)
   redirect "/meetups/#{@new_meetup.id}"
+end
+
+post '/join' do
+  if !authenticate!
+    flash[:notice] = "You must sign in."
+  else
+    @new_member = Membership.find_or_create_by(user_id: params[:user_id], meetup_id: params[:meetup_id], role: params[:meetup_id])
+  end
+  redirect "/meetups/#{@new_member.id}"
 end

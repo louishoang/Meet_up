@@ -1,7 +1,7 @@
-function validateForm(){
+function validateForm(form){
 	/* Loop through fields with the class of "req" */
-	for (var i = 0; i < add_meetup.elements.length; i++) {
-        if (add_meetup.elements[i].className == "req" && add_meetup.elements[i].value.length == 0) {
+	for (var i = 0; i < form.elements.length; i++) {
+        if (form.elements[i].className == "req" && form.elements[i].value.length == 0) {
             alert('Please fill in all required fields');
             return false;
         }
