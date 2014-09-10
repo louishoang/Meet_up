@@ -38,8 +38,7 @@ def already_member?(user_id, meetup_id)
 end
 
 def get_members(meetup_id)
-  @members_list = User.joins(:memberships)
-  @members_list.where(meetup_id: meetup_id)
+  @members_list = Membership.where("meetup_id = ?", meetup_id.id)
   # @members_list = Membership.joins(:users).collect{|membership| membership.users.map{|user| user.attributes.merge(membership.attributes)}}
 end
 
@@ -115,4 +114,8 @@ post '/leave' do
   @leave_member = Membership.where(@fields).destroy_all
   flash[:notice] = "You have left the group"
   redirect "/meetups/#{@fields[:meetup_id]}"
+end
+
+post '/meetups/:id/comments' do
+  "Hello World"
 end

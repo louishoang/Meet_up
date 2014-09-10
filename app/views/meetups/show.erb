@@ -1,33 +1,48 @@
-<h1><%= @meetup.name %> </h1>
-<p><%= @meetup.location %> </p>
-<p><%= @meetup.description %> </p>
-
-<% if current_user != nil && !@already_member %>
-  <form method="post" action="/join">
-    <input type="hidden" name="user_id" value="<%= current_user.id %>">
-    <input type="hidden" name="meetup_id" value="<%= @meetup.id %>">
-    <input type="hidden" name="role" value="member">
-    <input type="submit" value="Join this MeetUp">
-  </form>
-<% end %>
+<div style="margin: 20px 0px 0px 20px">
+  <h1><%= @meetup.name %> </h1>
+  <p><%= @meetup.location %> </p>
+  <p><%= @meetup.description %> </p>
+</div>
+<div>
+  <% if current_user != nil && !@already_member %>
+    <form method="post" action="/join">
+      <input type="hidden" name="user_id" value="<%= current_user.id %>">
+      <input type="hidden" name="meetup_id" value="<%= @meetup.id %>">
+      <input type="hidden" name="role" value="member">
+      <input type="submit" value="Join this MeetUp">
+    </form>
+  <% end %>
+</div>
 
 <% if current_user != nil && @already_member %>
-<form method="post" action="/leave">
-    <input type="hidden" name="user_id" value="<%= current_user.id %>">
-    <input type="hidden" name="meetup_id" value="<%= @meetup.id %>">
-    <input type="hidden" name="role" value="member">
-    <input type="submit" value="Leave this MeetUp">
-  </form>
+  <div style="margin: 20px 0px 0px 20px">
+    <form method="post" action="/leave">
+        <input type="hidden" name="user_id" value="<%= current_user.id %>">
+        <input type="hidden" name="meetup_id" value="<%= @meetup.id %>">
+        <input type="hidden" name="role" value="member">
+        <input class="red" type="submit" value="Leave this MeetUp">
+    </form>
+  </div>
+  <div style="margin: 80px 0px 0px 20px">
+    <span><h3>Leave a comment:</h3></span>
+    <form id="post_comment" style="margin-top :30px" method="post" action="/meetups/<%= params[:id] %>/comments">
+      <label for="title">Title: </label><input class="req red" type="text" name="title"/></br>
+      <label for="comment">Comment: </label><br>
+      <textarea cols="40" rows="5" name="comment" class="req red"></textarea></br>
+      <input class="red" type="submit" value="Submit"/>
+    </form>
+  <div>
 <% end %>
 
 <div class="members_list red">
   <h2> List of members </h2>
   <ul class="flexy-grid flexy-grid--three-up">
     <% @members_list.each do |member| %>
+
       <li>
         <div>
-          <img class="avatar" src="<%= member[:avatar_url] %>"/><br>
-          <span style="padding-left: 50px"><%= member[:username].capitalize %></span>
+          <img class="avatar" src="<%= member.user[:avatar_url] %>"/><br>
+          <span style="padding-left: 50px"><%= member.user[:username] %></span>
         </div>
       </li>
     <% end %>
